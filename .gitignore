@@ -5,9 +5,14 @@
 
 # Godot-specific ignores
 .import/
-addons/
-exports/
 logs/
+exports/*
+!exports/.gdignore
+addons/*
+!addons/addons.mk
+
+/icon.svg
+/icon.svg.import
 
 # Imported translations (automatically generated from CSV files)
 *.translation
@@ -58,8 +63,9 @@ godot.lock
 ### Vim ###
 
 # Swap
-[._]*.s[a-v][a-z]
-!*.svg
+[._]*.s[a-u][a-z]
+[._]*.sv[a-f]
+[._]*.sv[h-z]
 [._]*.sw[a-p]
 [._]s[a-rt-v][a-z]
 [._]ss[a-gi-z]
