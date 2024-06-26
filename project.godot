@@ -18,7 +18,7 @@ config/features=PackedStringArray("4.2")
 
 [autoload]
 
-Global="*res://src/autoloads/global.gd"
+Global="*res://content/base/src/autoloads/global.gd"
 
 [display]
 
