@@ -41,7 +41,7 @@ zip: exports/.gdignore
 # PREP
 
 .PHONY: prep
-prep: content content/addons content/base docs docs/.gdignore exports exports/.gdignore src src/autoloads icon.svg
+prep: content content/addons content/base content/base/assets content/base/resources content/base/src content/base/src/autoloads docs docs/.gdignore exports exports/.gdignore icon.svg
 
 content:
 	mkdir -p $@
@@ -49,7 +49,19 @@ content:
 content/addons: content
 	mkdir -p $@
 
- content/base: content
+content/base: content
+	mkdir -p $@
+
+content/base/assets: content/base
+	mkdir -p $@
+
+content/base/resources: content/base
+	mkdir -p $@
+
+content/base/src: content/base
+	mkdir -p $@
+
+content/base/src/autoloads: content/base/src
 	mkdir -p $@
 
 docs:
@@ -64,14 +76,22 @@ exports:
 exports/.gdignore: exports
 	touch $@
 
-src:
+html:
 	mkdir -p $@
 
-src/autoloads: src
-	mkdir -p $@
+html/.gdignore: html
+	touch $@
 
 icon.svg:
 	curl -sLo $@ https://raw.githubusercontent.com/godotengine/godot/master/editor/icons/DefaultProjectIcon.svg
+
+# CLEAN
+
+.PHONY: clean
+clean:
+	find addons -mindepth 1 -maxdepth 1 ! -name addons.mk -exec rm -rf {} \;
+	rm -rf .godot exports/debug exports/release
+	rm -f icon.svg icon.svg.import
 
 # ADDONS
 
