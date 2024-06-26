@@ -1,7 +1,7 @@
 # addons.mk
 
 .PHONY: addons
-addons: addons/input_helper addons/dialogue_manager addons/quest_system addons/limboai
+addons: addons/input_helper addons/dialogue_manager addons/quest_system addons/limboai addons/gloot
 
 addons/input_helper:
 	@$(call install_addon,2107)
@@ -14,3 +14,6 @@ addons/quest_system:
 
 addons/limboai:
 	@$(call install_addon,2514)
+
+addons/gloot:
+	@$(call install_addon,1368)
