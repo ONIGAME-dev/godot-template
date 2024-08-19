@@ -10,7 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Godot 4.3 Project Template"
+config/name="godot-template"
+config/name_localized={
+"en_US": "Godot 4.3 Project Template"
+}
 config/version="1.0.0"
 run/main_scene="res://content/base/resources/main.tscn"
 config/use_custom_user_dir=true
