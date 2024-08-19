@@ -109,11 +109,11 @@ endef
 npm_registry_uri = "https://registry.npmjs.org"
 
 define install_npm
-	echo $(eval $@_NPM_NAME = $(1))
-	echo $(eval $@_TITLE = $(shell curl -s -X GET "${npm_registry_uri}/${$@_NPM_NAME}/latest" | jq -r '.description'))
-	echo $(eval $@_DOWNLOAD_URL = $(shell curl -s -X GET "${npm_registry_uri}/${$@_NPM_NAME}/latest" | jq -r '.dist.tarball'))
-	echo $(eval $@_FILENAME = $(shell basename "${$@_DOWNLOAD_URL}"))
-	echo $(eval $@_TEMP_DIR = $(shell mktemp -d))
+	$(eval $@_NPM_NAME = $(1))
+	$(eval $@_TITLE = $(shell curl -s -X GET "${npm_registry_uri}/${$@_NPM_NAME}/latest" | jq -r '.description'))
+	$(eval $@_DOWNLOAD_URL = $(shell curl -s -X GET "${npm_registry_uri}/${$@_NPM_NAME}/latest" | jq -r '.dist.tarball'))
+	$(eval $@_FILENAME = $(shell basename "${$@_DOWNLOAD_URL}"))
+	$(eval $@_TEMP_DIR = $(shell mktemp -d))
 	echo "Installing addon: ${$@_TITLE}"
 	curl -sLo "${$@_TEMP_DIR}/${$@_FILENAME}" "${$@_DOWNLOAD_URL}"
 	tar -xzf "${$@_TEMP_DIR}/${$@_FILENAME}" -C "${$@_TEMP_DIR}"
