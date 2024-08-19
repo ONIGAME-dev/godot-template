@@ -1,7 +1,7 @@
 # Makefile
 
 .PHONY: all
-all: prep addons
+all: project_name prep addons
 
 # BUILD
 
@@ -31,6 +31,12 @@ pck: | exports/.gdignore
 zip: | exports/.gdignore
 	mkdir -p exports/$(export_type)
 	$(GODOT_BIN) --headless --export-pack "Linux" 'exports/$(export_type)/$(project_name)$(export_suffix).$@'
+
+# PROJ NAME
+
+.PHONY: project_name
+project_name:
+	sed -i 's|config/name=.*|config/name="$(shell basename "${PWD}")"|g' project.godot
 
 # PREP
 
