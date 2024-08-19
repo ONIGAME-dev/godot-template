@@ -115,8 +115,6 @@ define install_npm
 	echo $(eval $@_FILENAME = $(shell basename "${$@_DOWNLOAD_URL}"))
 	echo $(eval $@_TEMP_DIR = $(shell mktemp -d))
 	echo "Installing addon: ${$@_TITLE}"
-	echo "${$@_TEMP_DIR}"
-	echo "${PWD}"
 	curl -sLo "${$@_TEMP_DIR}/${$@_FILENAME}" "${$@_DOWNLOAD_URL}"
 	tar -xzf "${$@_TEMP_DIR}/${$@_FILENAME}" -C "${$@_TEMP_DIR}"
 	rsync -a "${$@_TEMP_DIR}/package/" "${PWD}/addons/$(shell basename $($@_NPM_NAME))"
