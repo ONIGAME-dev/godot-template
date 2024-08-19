@@ -36,7 +36,10 @@ zip: | exports/.gdignore
 
 .PHONY: project_name
 project_name:
-	sed -i 's|config/name=.*|config/name="$(shell basename "${PWD}")"|g' project.godot
+	$(eval $@_PROJECT_NAME = $(shell basename "${PWD}"))
+	@echo "Setting project name to $($@_PROJECT_NAME)"
+	@sed 's|\(config/name=\).*|config/name="$($@_PROJECT_NAME)"|g' -i project.godot
+	@sed -z 's|\(config/name_localized[ ]*=[ ]*{[ ]*\n[ ]*"en_US"[ ]*:[ ]*"\)[^"]*\("\n}\)|\1$($@_PROJECT_NAME)\2|' -i project.godot
 
 # PREP
 
