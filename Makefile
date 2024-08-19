@@ -17,20 +17,12 @@ export_type = release
 export_suffix = 
 endif
 
-.PHONY: build linux windows web pck zip
+.PHONY: build linux pck zip
 build: linux windows web pck zip
 
 linux: | exports/.gdignore
 	mkdir -p exports/$(export_type)/$@
 	$(GODOT_BIN) --headless --export-$(export_type) "Linux" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).x86_64'
-
-windows: | exports/.gdignore
-	mkdir -p exports/$(export_type)/$@
-	$(GODOT_BIN) --headless --export-$(export_type) "Windows" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).exe'
-
-web: | exports/.gdignore
-	mkdir -p exports/$(export_type)/$@
-	$(GODOT_BIN) --headless --export-$(export_type) "Web" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).html'
 
 pck: | exports/.gdignore
 	mkdir -p exports/$(export_type)
