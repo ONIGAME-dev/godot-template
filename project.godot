@@ -10,11 +10,12 @@ config_version=5
 
 [application]
 
-config/name="Godot 4.2 Project Template"
+config/name="Godot 4.3 Project Template"
 config/version="1.0.0"
-run/main_scene="res://main.tscn"
+run/main_scene="res://content/base/resources/main.tscn"
 config/use_custom_user_dir=true
-config/features=PackedStringArray("4.2")
+config/features=PackedStringArray("4.3", "Forward Plus")
+config/icon="res://icon.svg"
 
 [autoload]
 

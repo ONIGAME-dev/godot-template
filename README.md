@@ -1,9 +1,9 @@
 # godot-template
 
 [![license](https://img.shields.io/badge/License-MIT-blue)](https://github.com/bend-n/godot-actions/blob/main/LICENSE "License")
-[![version](https://img.shields.io/badge/4.2-blue?logo=godot-engine&logoColor=white&label=godot)](https://godotengine.org "Made with godot")
+[![version](https://img.shields.io/badge/4.3-blue?logo=godot-engine&logoColor=white&label=godot)](https://godotengine.org "Made with godot")
 
-Godot 4.2 project template repository.
+Godot 4.3 project template repository.
 
 ---
 
