@@ -1,11 +1,13 @@
 # Makefile
 
 .PHONY: all
-all: prep addons build
+all: prep addons
 
 # BUILD
 
 project_name = $(shell echo "$(shell grep 'config/name' project.godot | cut -d '=' -f 2)" | tr -d '"' | tr -d "'")
+godot_flatpak_bin = /var/lib/flatpak/app/org.godotengine.Godot/current/active/export/bin/org.godotengine.Godot
+GODOT_BIN = $(shell command -v godot &>/dev/null && echo 'godot' || (command -v &>/dev/null "$(godot_flatpak_bin)" && echo "$(godot_flatpak_bin)"))
 
 ifdef debug
 export_type = debug
@@ -18,68 +20,68 @@ endif
 .PHONY: build linux windows web pck zip
 build: linux windows web pck zip
 
-linux: exports/.gdignore
+linux: | exports/.gdignore
 	mkdir -p exports/$(export_type)/$@
-	godot --export-$(export_type) "Linux" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).x86_64'
+	$(GODOT_BIN) --export-$(export_type) "Linux" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).x86_64'
 
-windows: exports/.gdignore
+windows: | exports/.gdignore
 	mkdir -p exports/$(export_type)/$@
-	godot --export-$(export_type) "Windows" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).exe'
+	$(GODOT_BIN) --export-$(export_type) "Windows" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).exe'
 
-web: exports/.gdignore
+web: | exports/.gdignore
 	mkdir -p exports/$(export_type)/$@
-	godot --export-$(export_type) "Web" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).html'
+	$(GODOT_BIN) --export-$(export_type) "Web" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).html'
 
-pck: exports/.gdignore
+pck: | exports/.gdignore
 	mkdir -p exports/$(export_type)
-	godot --export-pack "Linux" 'exports/$(export_type)/$(project_name)$(export_suffix).$@'
+	$(GODOT_BIN) --export-pack "Linux" 'exports/$(export_type)/$(project_name)$(export_suffix).$@'
 
-zip: exports/.gdignore
+zip: | exports/.gdignore
 	mkdir -p exports/$(export_type)
-	godot --export-pack "Linux" 'exports/$(export_type)/$(project_name)$(export_suffix).$@'
+	$(GODOT_BIN) --export-pack "Linux" 'exports/$(export_type)/$(project_name)$(export_suffix).$@'
 
 # PREP
 
 .PHONY: prep
-prep: content content/addons content/base content/base/assets content/base/resources content/base/src content/base/src/autoloads docs docs/.gdignore exports exports/.gdignore icon.svg
+prep: icon.svg | content content/addons content/base content/base/assets content/base/resources content/base/src content/base/src/autoloads docs docs/.gdignore exports exports/.gdignore
 
 content:
 	mkdir -p $@
 
-content/addons: content
+content/addons: | content
 	mkdir -p $@
 
-content/base: content
+content/base: | content
 	mkdir -p $@
 
-content/base/assets: content/base
+content/base/assets: | content/base
 	mkdir -p $@
 
-content/base/resources: content/base
+content/base/resources: | content/base
 	mkdir -p $@
 
-content/base/src: content/base
+content/base/src: | content/base
 	mkdir -p $@
 
-content/base/src/autoloads: content/base/src
+content/base/src/autoloads: | content/base/src
 	mkdir -p $@
 
 docs:
 	mkdir -p $@
 
-docs/.gdignore: docs
+docs/.gdignore: | docs
 	touch $@
 
 exports:
 	mkdir -p $@
 
-exports/.gdignore: exports
+exports/.gdignore: | exports
 	touch $@
 
 html:
 	mkdir -p $@
 
-html/.gdignore: html
+html/.gdignore: | html
 	touch $@
 
 icon.svg:
