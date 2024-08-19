@@ -1,7 +1,10 @@
 # addons.mk
 
 .PHONY: addons
-addons: addons/gloot addons/dialogue_manager addons/gut addons/input_helper addons/limboai addons/quest_system
+addons: addons/gdcli addons/gloot addons/dialogue_manager addons/gut addons/input_helper addons/limboai addons/quest_system
+
+addons/gdcli:
+	@$(call install_npm,"@bendn/gdcli")
 
 addons/gloot:
 	@$(call install_addon,1368)

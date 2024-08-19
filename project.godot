@@ -23,6 +23,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Global="*res://content/base/src/autoloads/global.gd"
+CLI="*res://content/base/src/autoloads/cli.gd"
 
 [display]
 
