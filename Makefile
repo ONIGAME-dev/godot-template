@@ -5,7 +5,7 @@ all: prep addons
 
 # BUILD
 
-project_name = $(shell echo "$(shell grep 'config/name' project.godot | cut -d '=' -f 2)" | tr -d '"' | tr -d "'")
+project_name = $(shell echo "$(shell grep 'config/name=' project.godot | cut -d '=' -f 2)" | tr -d '"' | tr -d "'")
 godot_flatpak_bin = /var/lib/flatpak/app/org.godotengine.Godot/current/active/export/bin/org.godotengine.Godot
 GODOT_BIN = $(shell command -v godot &>/dev/null && echo 'godot' || (command -v &>/dev/null "$(godot_flatpak_bin)" && echo "$(godot_flatpak_bin)"))
 
@@ -22,23 +22,23 @@ build: linux windows web pck zip
 
 linux: | exports/.gdignore
 	mkdir -p exports/$(export_type)/$@
-	$(GODOT_BIN) --export-$(export_type) "Linux" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).x86_64'
+	$(GODOT_BIN) --headless --export-$(export_type) "Linux" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).x86_64'
 
 windows: | exports/.gdignore
 	mkdir -p exports/$(export_type)/$@
-	$(GODOT_BIN) --export-$(export_type) "Windows" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).exe'
+	$(GODOT_BIN) --headless --export-$(export_type) "Windows" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).exe'
 
 web: | exports/.gdignore
 	mkdir -p exports/$(export_type)/$@
-	$(GODOT_BIN) --export-$(export_type) "Web" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).html'
+	$(GODOT_BIN) --headless --export-$(export_type) "Web" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).html'
 
 pck: | exports/.gdignore
 	mkdir -p exports/$(export_type)
-	$(GODOT_BIN) --export-pack "Linux" 'exports/$(export_type)/$(project_name)$(export_suffix).$@'
+	$(GODOT_BIN) --headless --export-pack "Linux" 'exports/$(export_type)/$(project_name)$(export_suffix).$@'
 
 zip: | exports/.gdignore
 	mkdir -p exports/$(export_type)
-	$(GODOT_BIN) --export-pack "Linux" 'exports/$(export_type)/$(project_name)$(export_suffix).$@'
+	$(GODOT_BIN) --headless --export-pack "Linux" 'exports/$(export_type)/$(project_name)$(export_suffix).$@'
 
 # PREP
 
