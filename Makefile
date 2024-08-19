@@ -21,15 +21,18 @@ endif
 build: linux windows web pck zip
 
 linux: | exports/.gdignore
-	mkdir -p exports/$(export_type)/$@
+	@echo "Building $(export_type) version of $(project_name) for $@"
+	@mkdir -p exports/$(export_type)/$@
 	$(GODOT_BIN) --headless --export-$(export_type) "Linux" 'exports/$(export_type)/$@/$(project_name)$(export_suffix).x86_64'
 
 pck: | exports/.gdignore
-	mkdir -p exports/$(export_type)
+	@echo "Packing $(export_type) version of $(project_name) as $@"
+	@mkdir -p exports/$(export_type)
 	$(GODOT_BIN) --headless --export-pack "Linux" 'exports/$(export_type)/$(project_name)$(export_suffix).$@'
 
 zip: | exports/.gdignore
-	mkdir -p exports/$(export_type)
+	@echo "Packing $(export_type) version of $(project_name) as $@"
+	@mkdir -p exports/$(export_type)
 	$(GODOT_BIN) --headless --export-pack "Linux" 'exports/$(export_type)/$(project_name)$(export_suffix).$@'
 
 # PROJ NAME
@@ -47,54 +50,58 @@ project_name:
 prep: icon.svg | content content/addons content/base content/base/assets content/base/resources content/base/src content/base/src/autoloads docs docs/.gdignore exports exports/.gdignore
 
 content:
-	mkdir -p $@
+	@mkdir -p $@
 
 content/addons: | content
-	mkdir -p $@
+	@mkdir -p $@
 
 content/base: | content
-	mkdir -p $@
+	@mkdir -p $@
 
 content/base/assets: | content/base
-	mkdir -p $@
+	@mkdir -p $@
 
 content/base/resources: | content/base
-	mkdir -p $@
+	@mkdir -p $@
 
 content/base/src: | content/base
-	mkdir -p $@
+	@mkdir -p $@
 
 content/base/src/autoloads: | content/base/src
-	mkdir -p $@
+	@mkdir -p $@
 
 docs:
-	mkdir -p $@
+	@mkdir -p $@
 
 docs/.gdignore: | docs
-	touch $@
+	@touch $@
 
 exports:
-	mkdir -p $@
+	@mkdir -p $@
 
 exports/.gdignore: | exports
-	touch $@
+	@touch $@
 
 html:
-	mkdir -p $@
+	@mkdir -p $@
 
 html/.gdignore: | html
-	touch $@
+	@touch $@
 
 icon.svg:
-	curl -sLo $@ https://raw.githubusercontent.com/godotengine/godot/master/editor/icons/DefaultProjectIcon.svg
+	@echo "Fetching $@"
+	@curl -sLo $@ https://raw.githubusercontent.com/godotengine/godot/master/editor/icons/DefaultProjectIcon.svg
 
 # CLEAN
 
 .PHONY: clean
 clean:
-	find addons -mindepth 1 -maxdepth 1 ! -name addons.mk -exec rm -rf {} \;
-	rm -rf .godot exports/debug exports/release
-	rm -f icon.svg icon.svg.import
+	@echo "Removing addons"
+	@find addons -mindepth 1 -maxdepth 1 ! -name addons.mk -exec rm -rf {} \;
+	@echo "Removing exports"
+	@rm -rf .godot exports/debug exports/release
+	@echo "Removing icon"
+	@rm -f icon.svg icon.svg.import
 
 # ADDONS
 
