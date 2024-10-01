@@ -115,10 +115,10 @@ define install_addon
 	$(eval $@_DOWNLOAD_URL = $(shell curl -s -X GET "${asset_library_uri}/api/asset/${$@_ADDON_ID}" | jq -r '.download_url'))
 	$(eval $@_FILENAME = $(shell basename "${$@_DOWNLOAD_URL}"))
 	$(eval $@_TEMP_DIR = $(shell mktemp -d))
-	echo "Installing addon: ${$@_TITLE}"
+	echo "Installing Godot addon: ${$@_TITLE}"
 	curl -sLo "${$@_TEMP_DIR}/${$@_FILENAME}" "${$@_DOWNLOAD_URL}"
 	unzip -qd "${$@_TEMP_DIR}" "${$@_TEMP_DIR}/${$@_FILENAME}"
-	find "${$@_TEMP_DIR}" -maxdepth 2 -type d -name addons -exec rsync -a "{}" "${PWD}" \;
+	find "${$@_TEMP_DIR}" -mindepth 1 -maxdepth 2 -type d -name addons -exec rsync -a "{}" "${PWD}" \;
 	rm -rf "${$@_TEMP_DIR}"
 endef
 
@@ -130,7 +130,7 @@ define install_npm
 	$(eval $@_DOWNLOAD_URL = $(shell curl -s -X GET "${npm_registry_uri}/${$@_NPM_NAME}/latest" | jq -r '.dist.tarball'))
 	$(eval $@_FILENAME = $(shell basename "${$@_DOWNLOAD_URL}"))
 	$(eval $@_TEMP_DIR = $(shell mktemp -d))
-	echo "Installing addon: ${$@_TITLE}"
+	echo "Installing NPM addon: ${$@_TITLE}"
 	curl -sLo "${$@_TEMP_DIR}/${$@_FILENAME}" "${$@_DOWNLOAD_URL}"
 	tar -xzf "${$@_TEMP_DIR}/${$@_FILENAME}" -C "${$@_TEMP_DIR}"
 	rsync -a "${$@_TEMP_DIR}/package/" "${PWD}/addons/$(shell basename $($@_NPM_NAME))"
