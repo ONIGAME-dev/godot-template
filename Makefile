@@ -136,3 +136,20 @@ define install_npm
 	rsync -a "${$@_TEMP_DIR}/package/" "${PWD}/addons/$(shell basename $($@_NPM_NAME))"
 	rm -rf "${$@_TEMP_DIR}"
 endef
+
+itch_api_url = "https://api.itch.io"
+
+define install_itch
+	$(if $(itch_api_key),,$(error itch_api_key must be provided to install addons from itch))
+	$(eval $@_GAME_ID = 2241557)
+	$(eval $@_DOWNLOAD_DISPLAY_NAME = "Source Files")
+	$(eval $@_TITLE = $(shell curl -s -X GET -d "api_key=${itch_api_key}" "${itch_api_url}/games/${$@_GAME_ID}" | jq ".game.title"))
+	$(eval $@_DOWNLOAD_KEY_ID = $(shell curl -s -X GET -d "api_key=${itch_api_key}" "${itch_api_url}/profile/owned-keys" | jq ".owned_keys[] | select(.game_id==${$@_GAME_ID}).id"))
+	$(eval $@_UPLOAD_ID = $(shell curl -s -X GET -d "api_key=${itch_api_key}" -d "download_key_id=${$@_DOWNLOAD_KEY_ID}" "${itch_api_url}/games/${$@_GAME_ID}/uploads" | jq '.uploads[] | select(.display_name==${$@_DOWNLOAD_DISPLAY_NAME}).id'))
+	$(eval $@_FILENAME = $(shell curl -s -X GET -d "api_key=${itch_api_key}" -d "download_key_id=${$@_DOWNLOAD_KEY_ID}" "${itch_api_url}/games/${$@_GAME_ID}/uploads" | jq -r '.uploads[] | select(.display_name==${$@_DOWNLOAD_DISPLAY_NAME}).filename'))
+	$(eval $@_TEMP_DIR = $(shell mktemp -d))
+	curl -L -s -X GET -d "api_key=${itch_api_key}" -d "download_key_id=${$@_DOWNLOAD_KEY_ID}" "${itch_api_url}/uploads/8690227/download" -o "${$@_TEMP_DIR}/${$@_FILENAME}"
+	unzip -qd "${$@_TEMP_DIR}" "${$@_TEMP_DIR}/${$@_FILENAME}"
+	find "${$@_TEMP_DIR}" -mindepth 1 -maxdepth 1 -type d -exec rsync -a "{}/" "${PWD}/$@" \;
+	rm -rf "${$@_TEMP_DIR}"
+endef
